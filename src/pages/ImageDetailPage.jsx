@@ -2,6 +2,9 @@ import { useParams, Link } from "react-router";
 import { useImageDetail } from "../hooks/useImageDetail";
 import LoadingState from "../components/LoadingState";
 import ErrorState from "../components/ErrorState";
+import ImageInfoGrid from "../components/ImageInfoGrid";
+import ImageActions from "../components/ImageActions";
+import { ArrowLeft } from "lucide-react";
 
 /**
  * Displays a single image in detail view
@@ -29,53 +32,54 @@ export default function ImageDetailPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8 gap-4 sm:gap-8">
+    <div className="min-h-screen p-4 sm:p-8">
       <Link 
         to="/photos" 
-        className="absolute top-4 left-4 sm:top-8 sm:left-8 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base border-2 border-black rounded-full hover:bg-black hover:text-white transition-all"
+        className="fixed top-4 left-4 sm:top-8 sm:left-8 z-10 px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base border-2 border-black rounded-full hover:bg-black hover:text-white transition-all bg-white/90 backdrop-blur-sm flex items-center gap-2"
       >
-        ← Back to Gallery
+        <ArrowLeft className="w-4 h-4" />
+        Back to Gallery
       </Link>
       
-      <div className="text-center mt-12 sm:mt-0">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 px-4">Photo by {image.author}</h1>
-      </div>
-      
-      <div className="max-w-4xl w-full border rounded-lg overflow-hidden shadow-2xl">
-        <img 
-          src={image.imageUrl} 
-          alt={`Photo ${image.id} by ${image.author}`}
-          className="w-full h-auto"
-        />
-      </div>
+      <div className="max-w-5xl mx-auto pt-16 sm:pt-20">
+        <div className="w-full border rounded-lg overflow-hidden shadow-2xl mb-8">
+          <img 
+            src={image.imageUrl} 
+            alt={`Photo ${image.id} by ${image.author}`}
+            className="w-full h-auto"
+          />
+        </div>
 
-      <div className="bg-gray-100 p-4 sm:p-6 rounded-lg max-w-4xl w-full space-y-4">
-        <div>
-          <h2 className="text-lg sm:text-xl font-semibold mb-2">Image Details:</h2>
-          <div className="space-y-2 text-gray-700 text-sm sm:text-base">
-            <p><span className="font-semibold">Dimensions:</span> {image.width} x {image.height} pixels</p>
-            <p><span className="font-semibold">Author:</span> {image.author}</p>
+        <div className="mb-12">
+          <div className="max-w-3xl">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">
+              Photo by {image.author}
+            </h1>
+            <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
+              {image.description || `A stunning ${image.width}×${image.height} photograph captured by ${image.author}. This beautiful image showcases the photographer's unique perspective and artistic vision.`}
+            </p>
           </div>
         </div>
+
+        <div className="mb-12">
+          <div className="border-t border-gray-200"></div>
+        </div>
         
+
+        <div className="mb-12">
+          <ImageInfoGrid image={image} />
+        </div>
+
+        <div className="mb-12">
+          <div className="border-t border-gray-200"></div>
+        </div>
+
         <div>
-          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-            <a 
-              href={image.imageUrl} 
-              download={`photo-${image.id}-by-${image.author}.jpg`}
-              className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base bg-black text-white rounded-full hover:bg-gray-800 transition-all font-semibold text-center"
-            >
-              Download Image
-            </a>
-            <a 
-              href={image.originalUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="px-4 sm:px-6 py-2 sm:py-3 text-sm sm:text-base border-2 border-black rounded-full hover:bg-black hover:text-white transition-all font-semibold text-center"
-            >
-              View Original
-            </a>
-          </div>
+          <ImageActions 
+            imageUrl={image.imageUrl}
+            originalUrl={image.originalUrl}
+            downloadFilename={`photo-${image.id}-by-${image.author}.jpg`}
+          />
         </div>
       </div>
     </div>
