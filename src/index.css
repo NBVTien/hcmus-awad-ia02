@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.bbh-sans {
+  font-family: "BBH Sans Hegarty", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: "Figtree", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
